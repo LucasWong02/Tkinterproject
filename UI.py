@@ -1,6 +1,11 @@
 from tkinter import *
 from tkinter import Toplevel
+import sqlite3
 
+#                   Access to my SQL database
+
+conn = sqlite3.connect('users.db')
+c = conn.cursor()
 
                     # Funcionamiento de Ingreso #
 
@@ -65,11 +70,13 @@ def myClick():
                         # Funcionamiento de Registro #
 def agregar():
     def validacion():
-        contraseña = str(ingreso_Contra.get())
-        contraseña2 = str(ingreso_Contra2.get())
-        if(contraseña==contraseña2):
+        contrasena = str(ingreso_Contra.get())
+        contrasena2 = str(ingreso_Contra2.get())
+        if(contrasena==contrasena2):
             mensaje = Label(new2, text='Ya estas registrado!')
             mensaje.pack()
+            c.execute("INSERT INTO users VALUES (nombre, contrasena)")
+            conn.commit()
         else:
             mensaje2 = Label(new2, text='Las contraseñas no son iguales!')
             mensaje2.pack()
@@ -89,22 +96,23 @@ def agregar():
     label3.pack()
 
     #CONTRASEÑA INICIAL
-    contraseña = StringVar()
-    ingreso_Contra = Entry(new2, textvariable=contraseña, width="50")
+    contrasena = StringVar()
+    ingreso_Contra = Entry(new2, textvariable=contrasena, width="50")
     ingreso_Contra.pack()
 
     label3 = Label(new2, text='Repita su contraseña')
     label3.pack()
 
     #REP DE CONTRASEÑA
-    contraseña2 = StringVar()
-    ingreso_Contra2 = Entry(new2, textvariable=contraseña2, width="50")
+    contrasena2 = StringVar()
+    ingreso_Contra2 = Entry(new2, textvariable=contrasena2, width="50")
     ingreso_Contra2.pack()
 
     B1 = Button(new2, text='Registrarme', command=validacion)
     B1.pack()
     B2 = Button(new2, text='EXIT', command=new2.quit)
     B2.pack()
+
 
 
 ### MAIN ###
